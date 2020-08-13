@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+    <script>
+        var map=[
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,1,1,0,2],
+        [1,0,1,1,1,1,1,1,1,1,0,0,1,0,1],
+        [1,0,1,0,0,0,0,0,0,1,1,0,1,0,1],
+        [1,0,1,0,1,1,1,1,0,1,0,0,1,0,1],
+        [1,0,1,0,1,1,0,0,0,1,0,1,1,0,1],
+        [1,0,1,0,1,0,0,1,0,1,0,0,1,0,1],
+        [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+        [1,0,0,0,1,0,0,0,1,0,0,0,1,0,1],
+        [1,1,1,1,1,0,1,0,1,1,0,1,1,0,1],
+        [1,0,0,0,1,0,1,0,1,1,0,0,1,0,1],
+        [1,0,1,0,1,0,1,0,0,1,1,0,1,0,1],
+        [1,0,1,0,1,1,1,1,0,1,1,0,1,0,1],
+        [1,3,1,0,0,0,0,0,0,1,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+        
+        var tableX=map[0].length;
+        var tableY=map.length;
+        var str="";
+        function madeTable(){
+            str="<table border=1>";
+            for(var y=0;y<tableY;y++){
+                str+="<tr>";
+                for(var x=0;x<tableX;x++){
+                    str+="<td width=35 height=36 id='y"+y+"x"+x+"'></td>";
+                    //td에 width height을 안주면 데이터크기때문에 칸 크기가 커짐
+                }
+                str+="</tr>";
+            }   
+            str+="</table>";
+            return str;
+        }
+
+        function changeColor(id, color){
+            document.getElementById(id).style.backgroundColor=color;
+        }
+
+        function copyArray(){
+            for(var y=0;y<tableY;y++){
+                for(var x=0;x<tableX;x++){
+                    switch(map[y][x]){
+                        case 0:
+                            changeColor("y"+y+"x"+x,"white");
+                            break;
+                        case 1:
+                            changeColor("y"+y+"x"+x,"red");
+                            break;
+                        case 2:
+                            changeColor("y"+y+"x"+x,"yellow");
+                            break;
+                        case 3:
+                            document.getElementById("y"+y+"x"+x).innerHTML="<img width=31 height= 32 src='Kkobuk.jpg'>";
+                            break;    
+                        
+                    }
+                    // if(map[y][x]==1){
+                    //     changeColor("y"+y+"x"+x,"red"); //매개변수 인자는 문자열로 받는다
+                    // }else if(map[y][x]==0){
+                    //     changeColor("y"+y+"x"+x,"white");
+                    // }else if(map[y][x]==2){
+                    //     changeColor("y"+y+"x"+x,"yellow");
+                    // }else if(map[y][x]==3){
+                    //     document.getElementById("y"+y+"x"+x).style.backgroundImage="url('image/Kkobuk.jpg')";
+                    // }
+               
+                }
+            }
+            
+        }
+        window.onload=function(){
+            document.getElementById("console").innerHTML=madeTable();
+            copyArray();
+        } 
+        var nowX=1;
+        var nowY=13;
+        var myArr=new Array();
+        
+        //onkeypress로 이동한 배열 저장완료
+        //저장한 배열중에서 값이 없는 배열을 잘라버리고 싶은데?
+        for(var i=0;i<tableY*tableX;i++){
+            myArr[i]=new Array();
+        }
+        var count=0;
+
+        function myLocation(y){ 
+            myArr[count].push(y);
+        }
+
+        function inputFunction(e){
+            switch(e){
+                case 56://up
+                    switch(map[nowY-1][nowX]){
+                        case 0:
+                            break;
+                        case 1:
+                            return;
+                        case 2:
+                            alert("finish!!");
+                            break;
+                    }
+                    document.getElementById("y"+nowY+"x"+nowX).innerHTML="";
+                    nowY--;//y=12;x=1;
+                    document.getElementById("y"+nowY+"x"+nowX).innerHTML="<img width=31 height= 32 src='image/Kkobuk.jpg'>";
+                    myLocation(nowY);
+                    myLocation(nowX);
+                    count++;
+                    // if(!(map[nowY-1][nowX]==1)){
+                    //     document.getElementById("y"+nowY+"x"+nowX).innerHTML="";
+                    //     nowY--;//y=12;x=1;
+                    //     document.getElementById("y"+nowY+"x"+nowX).innerHTML="<img width=31 height= 32 src='image/Kkobuk.jpg'>";
+                    // }
+                    break;
+                case 54://right
+                    switch(map[nowY][nowX+1]){
+                        case 0:
+                            break;
+                        case 1:
+                            return;
+                        case 2:
+                            alert("finish!!");
+                            break;
+                    }
+                    document.getElementById("y"+nowY+"x"+nowX).innerHTML="";
+                    nowX++;//y=12;x=1;
+                    document.getElementById("y"+nowY+"x"+nowX).innerHTML="<img width=31 height= 32 src='image/Kkobuk.jpg'>";
+                    myLocation(nowY);
+                    myLocation(nowX);
+                    count++;
+                    break;
+                case 52://left
+                    switch(map[nowY][nowX-1]){
+                        case 0:
+                            break;
+                        case 1:
+                            return;
+                        case 2:
+                            alert("finish!!");
+                            break;
+                    }
+                    document.getElementById("y"+nowY+"x"+nowX).innerHTML="";
+                    nowX--;//y=12;x=1;
+                    document.getElementById("y"+nowY+"x"+nowX).innerHTML="<img width=31 height= 32 src='image/Kkobuk.jpg'>";
+                    myLocation(nowY);
+                    myLocation(nowX);
+                    count++;
+                    break;
+                case 50://down
+                    switch(map[nowY+1][nowX]){
+                        case 0:
+                            break;
+                        case 1:
+                            return;
+                        case 2:
+                            alert("finish!!");
+                            break;
+                    }
+                    document.getElementById("y"+nowY+"x"+nowX).innerHTML="";
+                    nowY++;//y=12;x=1;
+                    document.getElementById("y"+nowY+"x"+nowX).innerHTML="<img width=31 height= 32 src='image/Kkobuk.jpg'>";
+                    myLocation(nowY);
+                    myLocation(nowX);
+                    count++;
+                    break;
+            }
+        }
+        function reset(){
+            nowY=13;
+            nowX=1;
+            document.getElementById("console").innerHTML=madeTable();
+            copyArray();
+            myArr=new Array();
+            for(var i=0;i<tableY*tableX;i++){
+            myArr[i]=new Array();
+            }
+            count=0;
+        }
+        
+        
+        // console(index)로 myArr[0]~myArr[88]까지 데이터가 있는것을 확인
+        //splice로 myArr[88]이후부터 myArr[250]까지 버림
+
+
+        //최단경로구하기_ 사용자가 이동한 배열 좌표의 값이 중복되면 잘라버림
+        //right()->오른쪽 회전해서 이동가능한지 판별
+        // while(isMove()=true(오른쪽 회전가능하면)/false(불가능))
+        // false일 경우 계속해서 left()실행
+        // true는 앞으로 한칸 이동
+        //replay
+        //게임저장
+        
+    </script>
+</head>
+<body onkeypress="inputFunction(event.keyCode)">
+    <!-- 키를 누르지 않고 꼬부기 자동 움직이기-->
+    <div id="console"></div>
+    <div id="buttons">
+        <button id="reset" onclick="reset();">초기화</button>
+    </div>
+</body>
+</html>
